@@ -15,6 +15,7 @@ const PizzaBlock = (props) => {
         <ul>
           {props.types.map((value) => (
             <li
+              key={value}
               onClick={() => setActiveType(value)}
               className={activeType === value ? 'active' : ''}>
               {value === 1 ? 'тонкое' : 'традиционное'}
