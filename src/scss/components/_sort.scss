@@ -12,6 +12,10 @@
 
     b {
       margin-right: 8px;
+      @media(max-width:780px){
+        display: none;
+      }
+      
     }
 
     span {
