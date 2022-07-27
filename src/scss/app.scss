@@ -35,10 +35,7 @@ body {
     grid-column-gap: 11px;
     grid-row-gap: 10px;
     justify-items: center;
-    // @media(max-width:1400px){
-    // grid-template-columns: repeat(3, 1fr);
-
-    // }
+    
   }
 
   &__top {
@@ -74,7 +71,10 @@ body {
     justify-content: space-between;
     align-items: center;
   }
-
+  .content__items{
+    display: flex;
+    flex-direction: column;
+  }
   .content__title {
     display: flex;
     align-items: center;
