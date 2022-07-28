@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import pizzaLogo from '../../assets/img/pizza-logo.svg';
-const Header = () => {
+import Search from './Search';
+const Header = (props) => {
   return (
     <div className="header">
       <div className="container">
@@ -14,6 +15,7 @@ const Header = () => {
             </div>
           </NavLink>
         </div>
+        <Search />
         <div className="header__cart">
           <NavLink to="/cart" className="button button--cart">
             <span>520 ₽</span>
