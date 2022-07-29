@@ -4,29 +4,22 @@ import Sort from '../Sort/Sort';
 import axios from 'axios';
 import PizzaBlock from '../PizzaBlock/PizzaBlock';
 import PizzaSkeleton from '../PizzaBlock/Skeleton';
-import { SearchContext } from '../../App';
+import { useSelector } from 'react-redux';
+
 const Home = (props) => {
-  const { searchValue } = React.useContext(SearchContext);
+  const categoryId = useSelector((state) => state.filter.categoryId);
+  const selectedSort = useSelector((state) => state.filter.sorts);
+  const searchValue = useSelector((state) => state.search.value);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [selectedCategory, setSelectedCategory] = React.useState(0);
-  const [selectedSort, setSelectedSort] = React.useState({
-    name: 'популярности',
-    sortProperty: 'rating',
-  });
-  const onClickCategory = (id) => {
-    setSelectedCategory(id);
-  };
-  const onSelectSort = (i) => {
-    setSelectedSort(i);
-  };
+
   React.useEffect(() => {
-    const category = selectedCategory ? `category=${selectedCategory}` : '';
+    const category = categoryId ? `category=${categoryId}` : '';
     const sortBy = selectedSort.sortProperty.replace('-', '');
     const order = selectedSort.sortProperty.includes('-') ? 'asc' : 'desc';
-    if (!selectedCategory) {
-      setSelectedCategory('');
-    }
+    // if (!selectedCategory) {
+    //   setSelectedCategory('');
+    // }
     setIsLoading(true);
     axios
       .get(
@@ -40,8 +33,7 @@ const Home = (props) => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [selectedCategory, selectedSort]);
-  console.log(items);
+  }, [categoryId, selectedSort]);
 
   const pizzas = items
     .filter((obj) => {
@@ -54,8 +46,8 @@ const Home = (props) => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={selectedCategory} onSelect={(id) => onClickCategory(id)} />
-        <Sort value={selectedSort} onSelect={(i) => onSelectSort(i)} />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

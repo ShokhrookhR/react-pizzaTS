@@ -1,15 +1,35 @@
 import React from 'react';
 import s from './Search.module.scss';
-import { SearchContext } from '../../App';
+import { setSearchValue } from '../../redux/slices/searchSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import debounce from 'lodash.debounce';
 
 const Search = (props) => {
-  const { searchValue, setSearchValue } = React.useContext(SearchContext);
-
+  const searchValue = useSelector((state) => state.search.value);
+  const dispatch = useDispatch();
+  const inputRef = React.useRef();
+  const [value, setValue] = React.useState(searchValue);
+  const onClickClose = () => {
+    dispatch(setSearchValue(''));
+    setValue('');
+    inputRef.current.focus();
+  };
+  const updateSearchValue = React.useCallback(
+    debounce((e) => {
+      dispatch(setSearchValue(e.target.value));
+      setValue(e.target.value);
+    }, 500),
+    [],
+  );
+  const onUpdateValue = (e) => {
+    updateSearchValue(e);
+    setValue(e.target.value);
+  };
   return (
     <div className={s.body}>
       <svg
         className={s.searchIcon}
-        enable-background="new 0 0 32 32"
+        enableBackground="new 0 0 32 32"
         id="EditableLine"
         version="1.1"
         viewBox="0 0 32 32"
@@ -41,14 +61,15 @@ const Search = (props) => {
         />
       </svg>
       <input
+        ref={inputRef}
         className={s.input}
         type="text"
-        onChange={(e) => setSearchValue(e.target.value)}
-        value={searchValue}
+        onChange={(e) => onUpdateValue(e)}
+        value={value}
       />
-      {searchValue && (
+      {value && (
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={() => onClickClose()}
           className={s.closeIcon}
           height="48"
           viewBox="0 0 48 48"

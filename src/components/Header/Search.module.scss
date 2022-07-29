@@ -6,11 +6,11 @@
 	border: 1px solid rgba(0, 0, 0, 0.195);
 	padding: 10px 30px;
 	border-radius: 5px;
-	width: 200px;
+	width: 300px;
 	transition: all 0.5s ease;
-	&:focus{
-		width: 300px;
-	}
+	// &:focus{
+	// 	width: 300px;
+	// }
 }
 .searchIcon {
 	width: 20px;
