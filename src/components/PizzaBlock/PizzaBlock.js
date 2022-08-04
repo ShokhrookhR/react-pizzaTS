@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from '../../redux/slices/cartSlice';
 const PizzaBlock = (props) => {
-  const [countPizza, setPizzaCount] = useState(0);
+  const dispatch = useDispatch();
+  const cartItem = useSelector((state) => state.cart.items.find((item) => item.id === props.id));
+  const addedCount = cartItem ? cartItem.count : 0;
   const addPizza = () => {
-    setPizzaCount((actual) => actual + 1);
+    const items = {
+      id: props.id,
+      title: props.title,
+      price: props.price,
+      imageUrl: props.imageUrl,
+    };
+    dispatch(addItem(items));
   };
+
   const [activePrice, setActivePrice] = React.useState(0);
   const [activeType, setActiveType] = React.useState(0);
+
   return (
     <div className="pizza-block">
       <img className="pizza-block__image" src={props.imageUrl} alt="Pizza" />
@@ -48,7 +59,7 @@ const PizzaBlock = (props) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>{countPizza ? countPizza : '+'}</i>
+          <i>{addedCount ? addedCount : '+'}</i>
         </button>
       </div>
     </div>
