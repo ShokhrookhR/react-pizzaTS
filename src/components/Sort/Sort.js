@@ -5,6 +5,7 @@ const Sort = (props) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const selectedSort = useSelector((state) => state.filter.sorts);
   const dispatch = useDispatch();
+  const sortRef = React.useRef();
 
   const sortItems = [
     { name: 'популярности(ASC)', sortProperty: '-rating' },
@@ -18,8 +19,19 @@ const Sort = (props) => {
     dispatch(setSort(obj));
     setIsVisible(false);
   };
+  React.useEffect(() => {
+    const handleClickOutide = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setIsVisible(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutide);
+    return () => {
+      document.body.removeEventListener('click', handleClickOutide);
+    };
+  }, []);
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <svg
           width="10"

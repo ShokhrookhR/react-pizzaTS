@@ -1,37 +1,29 @@
 import React from 'react';
 import Categories from '../Categories/Categories';
 import Sort from '../Sort/Sort';
-import axios from 'axios';
 import PizzaBlock from '../PizzaBlock/PizzaBlock';
 import PizzaSkeleton from '../PizzaBlock/Skeleton';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchPizzas } from '../../redux/slices/pizzaSlice';
+import { Link } from 'react-router-dom';
 
 const Home = (props) => {
+  const dispatch = useDispatch();
   const categoryId = useSelector((state) => state.filter.categoryId);
   const selectedSort = useSelector((state) => state.filter.sorts);
   const searchValue = useSelector((state) => state.search.value);
-  const [items, setItems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const items = useSelector((state) => state.pizza.items);
+  const status = useSelector((state) => state.pizza.status);
 
-  React.useEffect(() => {
+  const getPizzas = async () => {
     const category = categoryId ? `category=${categoryId}` : '';
     const sortBy = selectedSort.sortProperty.replace('-', '');
     const order = selectedSort.sortProperty.includes('-') ? 'asc' : 'desc';
-    // if (!selectedCategory) {
-    //   setSelectedCategory('');
-    // }
-    setIsLoading(true);
-    axios
-      .get(
-        `https://62deabb69c47ff309e797094.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`,
-      )
-      .then((response) => {
-        return response.data;
-      })
-      .then((data) => {
-        setItems(data);
-        setIsLoading(false);
-      });
+
+    dispatch(fetchPizzas({ category, sortBy, order }));
+  };
+  React.useEffect(() => {
+    getPizzas();
     window.scrollTo(0, 0);
   }, [categoryId, selectedSort]);
 
@@ -51,7 +43,7 @@ const Home = (props) => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {isLoading ? [...new Array(6)].map((_, i) => <PizzaSkeleton key={i} />) : pizzas}
+        {status === 'loading' ? [...new Array(6)].map((_, i) => <PizzaSkeleton key={i} />) : pizzas}
       </div>
     </div>
   );
