@@ -6,14 +6,6 @@ const initialState = {
     name: 'популярности',
     sortProperty: 'rating',
   },
-  // sortItems: [
-  //   { name: 'популярности(ASC)', sortProperty: '-rating' },
-  //   { name: 'популярности(DESC)', sortProperty: 'rating' },
-  //   { name: 'цене(ASC)', sortProperty: '-price' },
-  //   { name: 'цене(DESC)', sortProperty: 'price' },
-  //   { name: 'алфавиту(ASC)', sortProperty: '-title' },
-  //   { name: 'алфавиту(DESC)', sortProperty: 'title' },
-  // ],
   categoryId: 0,
 };
 
@@ -29,7 +21,9 @@ export const filterSlice = createSlice({
     },
   },
 });
-
+export const sorts = (state) => state.filter.sorts;
+export const getCategories = (state) => state.filter.categories;
+export const getCategoryId = (state) => state.filter.categoryId;
 export const { setCategoryId, setSort } = filterSlice.actions;
 
 export default filterSlice.reducer;

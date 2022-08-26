@@ -4,23 +4,26 @@ import Sort from '../Sort/Sort';
 import PizzaBlock from '../PizzaBlock/PizzaBlock';
 import PizzaSkeleton from '../PizzaBlock/Skeleton';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPizzas } from '../../redux/slices/pizzaSlice';
-import { Link } from 'react-router-dom';
+import { fetchPizzas, setPizzaItems, setPizzaStatus } from '../../redux/slices/pizzaSlice';
+import { getCategoryId, sorts } from '../../redux/slices/filterSlice';
+import { setSearch } from '../../redux/slices/searchSlice';
 
-const Home = (props) => {
+const Home: React.FC = () => {
   const dispatch = useDispatch();
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const selectedSort = useSelector((state) => state.filter.sorts);
-  const searchValue = useSelector((state) => state.search.value);
-  const items = useSelector((state) => state.pizza.items);
-  const status = useSelector((state) => state.pizza.status);
+  const categoryId = useSelector(getCategoryId);
+  const selectedSort = useSelector(sorts);
+  const searchValue = useSelector(setSearch);
+  const items = useSelector(setPizzaItems);
+  const status = useSelector(setPizzaStatus);
 
   const getPizzas = async () => {
     const category = categoryId ? `category=${categoryId}` : '';
     const sortBy = selectedSort.sortProperty.replace('-', '');
     const order = selectedSort.sortProperty.includes('-') ? 'asc' : 'desc';
 
-    dispatch(fetchPizzas({ category, sortBy, order }));
+    dispatch(
+      //@ts-ignore
+      fetchPizzas({ category, sortBy, order }));
   };
   React.useEffect(() => {
     getPizzas();
@@ -28,13 +31,13 @@ const Home = (props) => {
   }, [categoryId, selectedSort]);
 
   const pizzas = items
-    .filter((obj) => {
+    .filter((obj:any) => {
       if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
       }
       return false;
     })
-    .map((p) => <PizzaBlock {...p} key={p.id} />);
+    .map((p:any) => <PizzaBlock {...p} key={p.id} />);
   return (
     <div className="container">
       <div className="content__top">

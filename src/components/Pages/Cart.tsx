@@ -1,13 +1,12 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { removeItems } from '../../redux/slices/cartSlice';
+import { removeItems, setCart } from '../../redux/slices/cartSlice';
 import CartItem from '../Header/CartItem';
 
-const Cart = () => {
+const Cart: React.FC = ()=> {
   const dispatch = useDispatch();
-  const { items, totalPrice } = useSelector((state) => state.cart);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const { items, totalPrice } = useSelector(setCart);
+  const totalCount = items.reduce((sum:number, item:any) => sum + item.count, 0);
   return (
     <div className="container container--cart">
       <div className="cart">
@@ -84,7 +83,7 @@ const Cart = () => {
           </div>
         </div>
         <div className="content__items">
-          {items.map((item) => (
+          {items.map((item:any) => (
             <CartItem {...item} key={item.id} />
           ))}
         </div>

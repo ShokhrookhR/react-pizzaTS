@@ -6,7 +6,6 @@ import NotFound from './components/Pages/NotFound';
 import Cart from './components/Pages/Cart';
 import AboutPizza from './components/Pages/AboutPizza';
 import MainLayout from './layouts/MainLayout';
-export const SearchContext = React.createContext();
 function App() {
   return (
     <Routes>

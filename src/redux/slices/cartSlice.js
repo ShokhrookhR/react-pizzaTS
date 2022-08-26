@@ -54,7 +54,9 @@ export const cartSlice = createSlice({
     },
   },
 });
-
+export const setCart = (state) => state.cart;
+export const currentCardItem = (props) => (state) =>
+  state.cart.items.find((item) => item.id === props.id);
 export const { addItem, minusItem, removeItem, removeItems } = cartSlice.actions;
 
 export default cartSlice.reducer;

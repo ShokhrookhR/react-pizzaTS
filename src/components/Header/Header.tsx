@@ -2,10 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import pizzaLogo from '../../assets/img/pizza-logo.svg';
+import { setCart } from '../../redux/slices/cartSlice';
 import Search from './Search';
-const Header = (props) => {
-  const { items, totalPrice } = useSelector((state) => state.cart);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+const Header: React.FC = ()=> {
+  const { items, totalPrice } = useSelector(setCart);
+  const totalCount = items.reduce((sum:number, item:any) => sum + item.count, 0);
   const { pathname } = useLocation();
   return (
     <div className="header">

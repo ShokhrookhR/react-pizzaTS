@@ -2,9 +2,12 @@ import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-const AboutPizza = () => {
+const AboutPizza: React.FC = () => {
   const { id } = useParams();
-  const [data, setData] = React.useState();
+  const [data, setData] = React.useState<{
+    imageUrl:string,
+    title:string,
+  }>();
   React.useEffect(() => {
     async function fetchPizza() {
       try {
@@ -20,7 +23,7 @@ const AboutPizza = () => {
     return <h1>Загрузка...</h1>;
   }
   return (
-    <div>
+    <div className="container">
       <div>
         <img src={data.imageUrl} alt="pizza" />
       </div>
