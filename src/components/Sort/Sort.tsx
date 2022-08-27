@@ -24,8 +24,11 @@ const Sort: React.FC = () => {
     setIsVisible(false);
   };
   React.useEffect(() => {
-    const handleClickOutide = (event:any) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutide = (event:MouseEvent) => {
+      const _event = event as MouseEvent &{
+        path:Node[]
+      }
+      if (sortRef.current &&!_event.path.includes(sortRef.current)) {
         setIsVisible(false);
       }
     };
