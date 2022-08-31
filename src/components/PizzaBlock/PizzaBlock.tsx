@@ -1,22 +1,21 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem, currentCardItem } from '../../redux/slices/cartSlice';
+import { addItem, CartItemType, currentCardItem } from '../../redux/slices/cartSlice';
 import { Link } from 'react-router-dom';
+import { PizzaItemType } from '../../redux/slices/pizzaSlice';
 
-type PizzaBlockProps={
-  id:number,title:string,price:number,imageUrl:string,sizes:number[],types:number[]
-}
-
-const PizzaBlock:React.FC<PizzaBlockProps> = ({id,title,price,imageUrl,sizes,types}) => {
+const PizzaBlock:React.FC<PizzaItemType> = ({id,title,price,imageUrl,sizes,types}) => {
   const dispatch = useDispatch();
   const cartItem = useSelector(currentCardItem(id));
   const addedCount = cartItem ? cartItem.count : 0;
   const addPizza = () => {
-    const items = {
-      id: id,
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
+    const items:CartItemType = {
+        id,
+        title,
+        price,
+        imageUrl,
+        count:0
+        
     };
     dispatch(addItem(items));
   };

@@ -1,25 +1,22 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort, sorts } from '../../redux/slices/filterSlice';
-type SortItem={
-  name: string;
-  sortProperty: string;
-}
-const Sort: React.FC = () => {
+import { setSort, SortPropertyEnum, sorts, SortsType } from '../../redux/slices/filterSlice';
+
+const Sort: React.FC = React.memo(() => {
   const [isVisible, setIsVisible] = React.useState(false);
   const selectedSort = useSelector(sorts);
   const dispatch = useDispatch();
   const sortRef = React.useRef<HTMLDivElement>(null);
 
   const sortItems = [
-    { name: 'популярности(ASC)', sortProperty: '-rating' },
-    { name: 'популярности(DESC)', sortProperty: 'rating' },
-    { name: 'цене(ASC)', sortProperty: '-price' },
-    { name: 'цене(DESC)', sortProperty: 'price' },
-    { name: 'алфавиту(ASC)', sortProperty: '-title' },
-    { name: 'алфавиту(DESC)', sortProperty: 'title' },
+    { name: 'популярности(ASC)', sortProperty: SortPropertyEnum.RATING_ASC },
+    { name: 'популярности(DESC)', sortProperty: SortPropertyEnum.RATING_DESC },
+    { name: 'цене(ASC)', sortProperty: SortPropertyEnum.PRICE_ASC },
+    { name: 'цене(DESC)', sortProperty: SortPropertyEnum.PRICE_DESC },
+    { name: 'алфавиту(ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
+    { name: 'алфавиту(DESC)', sortProperty: SortPropertyEnum.TITLE_DESC },
   ];
-  const onClickItems = (obj:SortItem) => {
+  const onClickItems = (obj:SortsType) => {
     dispatch(setSort(obj));
     setIsVisible(false);
   };
@@ -70,6 +67,6 @@ const Sort: React.FC = () => {
       )}
     </div>
   );
-};
+})
 
 export default Sort;

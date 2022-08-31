@@ -3,13 +3,14 @@ import Categories from '../Categories/Categories';
 import Sort from '../Sort/Sort';
 import PizzaBlock from '../PizzaBlock/PizzaBlock';
 import PizzaSkeleton from '../PizzaBlock/Skeleton';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fetchPizzas, setPizzaItems, setPizzaStatus } from '../../redux/slices/pizzaSlice';
 import { getCategoryId, sorts } from '../../redux/slices/filterSlice';
 import { setSearch } from '../../redux/slices/searchSlice';
+import { useAppDispatch } from '../../redux/store';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const categoryId = useSelector(getCategoryId);
   const selectedSort = useSelector(sorts);
   const searchValue = useSelector(setSearch);
@@ -21,9 +22,7 @@ const Home: React.FC = () => {
     const sortBy = selectedSort.sortProperty.replace('-', '');
     const order = selectedSort.sortProperty.includes('-') ? 'asc' : 'desc';
 
-    dispatch(
-      //@ts-ignore
-      fetchPizzas({ category, sortBy, order }));
+    dispatch(fetchPizzas({ category, sortBy, order }));
   };
   React.useEffect(() => {
     getPizzas();
@@ -31,13 +30,13 @@ const Home: React.FC = () => {
   }, [categoryId, selectedSort]);
 
   const pizzas = items
-    .filter((obj:any) => {
+    .filter((obj: any) => {
       if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
       }
       return false;
     })
-    .map((p:any) => <PizzaBlock {...p} key={p.id} />);
+    .map((p: any) => <PizzaBlock {...p} key={p.id} />);
   return (
     <div className="container">
       <div className="content__top">

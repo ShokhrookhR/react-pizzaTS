@@ -1,33 +1,33 @@
-import axios from 'axios';
+// import axios from 'axios';
 import React from 'react';
+import {  useDispatch, useSelector,  } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { fetchCurrentPizza, getItem, setPizzaStatus } from '../../redux/slices/pizzaSlice';
 
 const AboutPizza: React.FC = () => {
   const { id } = useParams();
-  const [data, setData] = React.useState<{
-    imageUrl:string,
-    title:string,
-  }>();
+  const item= useSelector(getItem)
+  const status= useSelector(setPizzaStatus)
+  const dispatch=useDispatch()
+ 
   React.useEffect(() => {
-    async function fetchPizza() {
-      try {
-        let { data } = await axios.get(`https://62deabb69c47ff309e797094.mockapi.io/items/${id}`);
-        setData(data);
-      } catch (error) {
-        alert('Пицц нет');
-      }
+    try {
+      dispatch(
+        //@ts-ignore
+        fetchCurrentPizza(id))
+    } catch (error) {
+      alert(error)
     }
-    fetchPizza();
-  }, [id]);
-  if (!data) {
-    return <h1>Загрузка...</h1>;
+  }, []);
+  if (status==='loading') {
+    return <div className={'container'}><h1>Загрузка...</h1></div>;
   }
   return (
     <div className="container">
       <div>
-        <img src={data.imageUrl} alt="pizza" />
+        <img src={item.imageUrl} alt="pizza" />
       </div>
-      <div>{data.title}</div>
+      <div>{item.title}</div>
     </div>
   );
 };
